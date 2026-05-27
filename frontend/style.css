@@ -1,0 +1,254 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+
+  font-family:'Segoe UI', sans-serif;
+
+  background-image:url('bedroom.jpg');
+
+  background-size:cover;
+
+  background-position:center;
+
+  background-repeat:no-repeat;
+
+  min-height:100vh;
+
+}
+
+.overlay{
+
+  width:100%;
+
+  min-height:100vh;
+
+  background:rgba(0,0,0,0.35);
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  padding:20px;
+
+}
+
+.container{
+
+  width:100%;
+
+  max-width:380px;
+
+  background:rgba(255,255,255,0.92);
+
+  padding:30px;
+
+  border-radius:18px;
+
+  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+
+  backdrop-filter:blur(8px);
+
+}
+
+.dashboard-container{
+
+  max-width:900px;
+
+}
+
+h1,h2{
+
+  text-align:center;
+
+  color:#28a745;
+
+  margin-bottom:25px;
+
+}
+
+label{
+
+  display:block;
+
+  margin-top:15px;
+
+  margin-bottom:8px;
+
+  font-weight:bold;
+
+  color:#333;
+
+  font-size:17px;
+
+}
+
+input,
+select{
+
+  width:100%;
+
+  padding:12px;
+
+  border:1px solid #ccc;
+
+  border-radius:8px;
+
+  font-size:15px;
+
+  margin-bottom:15px;
+
+}
+
+input:focus,
+select:focus{
+
+  outline:none;
+
+  border:1px solid #28a745;
+
+}
+
+button,
+.btn{
+
+  width:100%;
+
+  padding:13px;
+
+  background:#28a745;
+
+  color:white;
+
+  border:none;
+
+  border-radius:8px;
+
+  font-size:17px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+}
+
+button:hover,
+.btn:hover{
+
+  background:#218838;
+
+  transform:scale(1.02);
+
+}
+
+a{
+
+  text-decoration:none;
+
+}
+
+#bookingInfo,
+#bookingSummary{
+
+  background:#f5f5f5;
+
+  padding:15px;
+
+  border-radius:10px;
+
+  margin-bottom:20px;
+
+}
+
+#bookingInfo p,
+#bookingSummary p{
+
+  margin:10px 0;
+
+  font-size:17px;
+
+}
+
+.message{
+
+  text-align:center;
+
+  margin-top:15px;
+
+}
+
+.message a{
+
+  color:#28a745;
+
+  font-weight:bold;
+
+}
+
+#bookingList{
+
+  width:100%;
+
+  overflow-x:auto;
+
+}
+
+table{
+
+  width:100%;
+
+  min-width:600px;
+
+  border-collapse:collapse;
+
+  margin-top:20px;
+
+  background:white;
+
+}
+
+th,
+td{
+
+  border:1px solid #ddd;
+
+  padding:10px;
+
+  text-align:center;
+
+}
+
+th{
+
+  background:#28a745;
+
+  color:white;
+
+}
+
+img{
+
+  width:90px;
+
+  border-radius:8px;
+
+}
+
+/* SMALL LOGOUT BUTTON */
+
+#logoutBtn{
+
+  width:150px;
+
+  display:block;
+
+  margin:25px auto 0;
+
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>VRVS Booking</title>
+
+  <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+  <div class="overlay">
+
+    <div class="container">
+
+      <h1>Book Your Stay</h1>
+
+      <form id="bookingForm">
+
+        <!-- USERNAME -->
+
+        <label>
+          Username
+        </label>
+
+        <input
+          type="text"
+          id="username"
+          readonly
+        >
+
+        <!-- ROOM TYPE -->
+
+        <label>
+          Room Type
+        </label>
+
+        <select id="roomType" required>
+
+          <option value="Single">
+            Single
+          </option>
+
+          <option value="Double">
+            Double
+          </option>
+
+          <option value="King">
+            King
+          </option>
+
+          <option value="Queen">
+            Queen
+          </option>
+
+        </select>
+
+        <!-- CHECK IN -->
+
+        <label>
+          Check-in Date
+        </label>
+
+        <input
+          type="date"
+          id="checkIn"
+          required
+        >
+
+        <!-- CHECK OUT -->
+
+        <label>
+          Check-out Date
+        </label>
+
+        <input
+          type="date"
+          id="checkOut"
+          required
+        >
+
+        <!-- GUESTS -->
+
+        <label>
+          Number of Guests
+        </label>
+
+        <input
+          type="number"
+          id="guests"
+          min="1"
+          required
+        >
+
+        <!-- BUTTON -->
+
+        <button type="submit">
+
+          Proceed to Payment
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <script src="booking.js"></script>
+
+</body>
+
+</html>

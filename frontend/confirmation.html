@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="overlay">
+    <div class="container">
+
+      <h1>Booking Confirmed!</h1>
+
+      <div id="bookingSummary"></div>
+
+      <a href="dashboard.html">
+        <button>Go To Dashboard</button>
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+
+    const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    const lastBooking = bookings[bookings.length - 1];
+
+    if (lastBooking) {
+
+      document.getElementById("bookingSummary").innerHTML = `
+
+        <p>Room Type: ${lastBooking.roomType}</p>
+        <p>Check-in: ${lastBooking.checkIn}</p>
+        <p>Check-out: ${lastBooking.checkOut}</p>
+        <p>Guests: ${lastBooking.guests}</p>
+
+        <!-- ✅ FIX: prevent undefined -->
+        <p>Total Amount: ₹${lastBooking.totalAmount || 0}</p>
+
+        <p>Status: ${lastBooking.paymentStatus || "Pending"}</p>
+
+      `;
+
+    } else {
+
+      document.getElementById("bookingSummary").innerHTML =
+        `<p>No booking found.</p>`;
+    }
+
+  </script>
+
+</body>
+</html>
+

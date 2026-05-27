@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRVS Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+  <div class="overlay">
+
+    <div class="container dashboard-container">
+
+      <h1>User Dashboard</h1>
+
+      <div id="bookingList"></div>
+
+      <button id="logoutBtn">Logout</button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", async () => {
+
+      const bookingList = document.getElementById("bookingList");
+
+      // GET USERNAME (SAFE FIX)
+      const username = localStorage.getItem("username");
+
+      if (!username) {
+        alert("Session expired. Please login again.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      // ROOM IMAGES
+      const roomImages = {
+        "Single": "single.jpg",
+        "Double": "double.jpg",
+        "King": "king.jpg",
+        "Queen": "queen.jpg"
+      };
+
+      // BACKEND TEST (OPTIONAL DEBUG)
+      fetch("http://localhost:5000/")
+        .then(res => res.text())
+        .then(data => console.log("Backend Connected:", data))
+        .catch(err => console.log("Backend Error:", err));
+
+      try {
+
+        // FIXED API CALL (IMPORTANT)
+        const response = await fetch(
+          `http://localhost:5000/my-bookings/${encodeURIComponent(username)}`
+        );
+
+        const bookings = await response.json();
+
+        console.log("Bookings:", bookings);
+
+        // SAFE CHECK
+        if (!bookings || bookings.length === 0) {
+
+          bookingList.innerHTML = `
+            <p style="text-align:center;">
+              No bookings found.
+            </p>
+          `;
+
+          return;
+        }
+
+        // CREATE TABLE
+        const table = document.createElement("table");
+
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Room</th>
+              <th>Room Type</th>
+              <th>Check-in</th>
+              <th>Check-out</th>
+              <th>Guests</th>
+              <th>Payment</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${bookings.map((b) => `
+              <tr>
+                <td>
+                  <img
+                    src="${roomImages[b.roomType] || 'single.jpg'}"
+                    alt="${b.roomType}"
+                    width="100"
+                  >
+                </td>
+
+                <td>${b.roomType}</td>
+                <td>${b.checkIn}</td>
+                <td>${b.checkOut}</td>
+                <td>${b.guests || 1}</td>
+                <td>${b.paymentStatus || "Pending"}</td>
+
+                <td>
+                  <button onclick="cancelBooking('${b._id}')">
+                    Cancel
+                  </button>
+                </td>
+
+              </tr>
+            `).join("")}
+          </tbody>
+        `;
+
+        bookingList.appendChild(table);
+
+      } catch (error) {
+
+        console.log("DASHBOARD ERROR:", error);
+
+        bookingList.innerHTML = `
+          <p style="text-align:center;color:red;">
+            Failed to load bookings.
+          </p>
+        `;
+      }
+
+      // LOGOUT
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("username");
+
+        alert("Logged out successfully!");
+        window.location.href = "login.html";
+
+      });
+
+    });
+
+    // CANCEL BOOKING
+    async function cancelBooking(id) {
+
+      try {
+
+        const response = await fetch(
+          `http://localhost:5000/cancel-booking/${id}`,
+          { method: "DELETE" }
+        );
+
+        const data = await response.json();
+
+        alert(data.message || "Cancelled");
+
+        location.reload();
+
+      } catch (error) {
+        console.log(error);
+        alert("Cancellation Failed");
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
