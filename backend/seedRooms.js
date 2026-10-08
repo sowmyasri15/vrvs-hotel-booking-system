@@ -1,7 +1,14 @@
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 const Room = require("./models/Room");
 
-mongoose.connect("mongodb://127.0.0.1:27017/vrvsHotelDB");
+if (!process.env.MONGO_URI) {
+  console.error("MONGO_URI is not defined.");
+  process.exit(1);
+}
+
+mongoose.connect(process.env.MONGO_URI);
 
 const rooms = [
   { roomType: "Single", price: 1000, image: "", description: "Single room" },

@@ -1,3 +1,5 @@
+const API_BASE_URL = window.API_BASE_URL || "https://YOUR_RENDER_BACKEND_URL.onrender.com";
+
 const booking = JSON.parse(localStorage.getItem("currentBooking"));
 
 // CHECK BOOKING
@@ -66,7 +68,7 @@ document.getElementById("paymentForm").addEventListener("submit", async function
   }
 
   try {
-    const response = await fetch("http://localhost:5000/payment", {
+    const response = await fetch(`${API_BASE_URL}/payment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

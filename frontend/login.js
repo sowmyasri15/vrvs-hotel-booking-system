@@ -1,3 +1,5 @@
+const API_BASE_URL = window.API_BASE_URL || "https://YOUR_RENDER_BACKEND_URL.onrender.com";
+
 document.getElementById("loginForm")
 .addEventListener("submit", async function (e) {
 
@@ -19,7 +21,7 @@ document.getElementById("loginForm")
   try {
 
     const response =
-    await fetch("http://localhost:5000/login", {
+    await fetch(`${API_BASE_URL}/login`, {
 
       method: "POST",
 

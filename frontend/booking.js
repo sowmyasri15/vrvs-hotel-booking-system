@@ -1,3 +1,5 @@
+const API_BASE_URL = window.API_BASE_URL || "https://YOUR_RENDER_BACKEND_URL.onrender.com";
+
 // CHECK LOGIN (SAFE FIX)
 if (localStorage.getItem("isLoggedIn") !== "true") {
   alert("Please Login First");
@@ -43,7 +45,7 @@ document.getElementById("bookingForm").addEventListener("submit", async function
   };
 
   try {
-    const response = await fetch("http://localhost:5000/book-room", {
+    const response = await fetch(`${API_BASE_URL}/book-room`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

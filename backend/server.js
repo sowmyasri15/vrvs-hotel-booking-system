@@ -1,7 +1,10 @@
+require("dotenv").config();
+
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
+
+const connectDB = require("./config/db");
 
 const User = require("./models/User");
 const Room = require("./models/Room");
@@ -15,47 +18,47 @@ app.use(cors());
 app.use(express.json());
 
 /* DATABASE CONNECTION */
-mongoose.connect("mongodb://127.0.0.1:27017/vrvsHotelDB")
-.then(async () => {
-  console.log("MongoDB Connected");
+connectDB()
+  .then(async () => {
+    console.log("MongoDB Connected");
 
-  // ✅ FIX: AUTO INSERT ROOMS IF EMPTY
-  const count = await Room.countDocuments();
+    // AUTO INSERT ROOMS IF EMPTY
+    const count = await Room.countDocuments();
 
-  if (count === 0) {
-    await Room.insertMany([
-      {
-        roomType: "Single",
-        price: 1000,
-        image: "single.jpg",
-        description: "Single bed room"
-      },
-      {
-        roomType: "Double",
-        price: 2000,
-        image: "double.jpg",
-        description: "Double bed room"
-      },
-      {
-        roomType: "King",
-        price: 3000,
-        image: "king.jpg",
-        description: "King size luxury room"
-      },
-      {
-        roomType: "Queen",
-        price: 4000,
-        image: "queen.jpg",
-        description: "Queen size premium room"
-      }
-    ]);
+    if (count === 0) {
+      await Room.insertMany([
+        {
+          roomType: "Single",
+          price: 1000,
+          image: "single.jpg",
+          description: "Single bed room"
+        },
+        {
+          roomType: "Double",
+          price: 2000,
+          image: "double.jpg",
+          description: "Double bed room"
+        },
+        {
+          roomType: "King",
+          price: 3000,
+          image: "king.jpg",
+          description: "King size luxury room"
+        },
+        {
+          roomType: "Queen",
+          price: 4000,
+          image: "queen.jpg",
+          description: "Queen size premium room"
+        }
+      ]);
 
-    console.log("Rooms Seeded Successfully");
-  }
-})
-.catch((err) => {
-  console.log("MongoDB Error:", err);
-});
+      console.log("Rooms Seeded Successfully");
+    }
+  })
+  .catch((err) => {
+    console.log("MongoDB Error:", err);
+  });
 
 /* REGISTER */
 app.post("/register", async (req, res) => {
@@ -243,6 +246,8 @@ app.delete("/cancel-booking/:id", async (req, res) => {
 });
 
 /* SERVER */
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

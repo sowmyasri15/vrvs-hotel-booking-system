@@ -27,7 +27,9 @@
 
   </div>
 
+  <script src="config.js"></script>
   <script>
+    const API_BASE_URL = window.API_BASE_URL || "https://YOUR_RENDER_BACKEND_URL.onrender.com";
 
     document.addEventListener("DOMContentLoaded", async () => {
 
@@ -51,7 +53,7 @@
       };
 
       // BACKEND TEST (OPTIONAL DEBUG)
-      fetch("http://localhost:5000/")
+      fetch(`${API_BASE_URL}/`)
         .then(res => res.text())
         .then(data => console.log("Backend Connected:", data))
         .catch(err => console.log("Backend Error:", err));
@@ -60,7 +62,7 @@
 
         // FIXED API CALL (IMPORTANT)
         const response = await fetch(
-          `http://localhost:5000/my-bookings/${encodeURIComponent(username)}`
+          `${API_BASE_URL}/my-bookings/${encodeURIComponent(username)}`
         );
 
         const bookings = await response.json();
@@ -155,7 +157,7 @@
       try {
 
         const response = await fetch(
-          `http://localhost:5000/cancel-booking/${id}`,
+          `${API_BASE_URL}/cancel-booking/${id}`,
           { method: "DELETE" }
         );
 
