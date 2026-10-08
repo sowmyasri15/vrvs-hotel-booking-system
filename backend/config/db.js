@@ -1,12 +1,21 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI is not defined");
+  }
+
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/vrvs");
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 15000,
+      autoIndex: true
+    });
+
     console.log("MongoDB Connected");
+    return true;
   } catch (error) {
-    console.log(error);
-    process.exit(1);
+    console.error("MongoDB connection failed:", error.message);
+    throw error;
   }
 };
 

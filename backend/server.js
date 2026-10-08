@@ -12,17 +12,37 @@ const Booking = require("./models/Booking");
 const Payment = require("./models/Payment");
 
 const app = express();
+const PORT = Number(process.env.PORT) || 5000;
 
 /* MIDDLEWARE */
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+app.options("*", cors());
 app.use(express.json());
 
-/* DATABASE CONNECTION */
-connectDB()
-  .then(async () => {
-    console.log("MongoDB Connected");
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "VRVS Hotel Booking API is running"
+  });
+});
 
-    // AUTO INSERT ROOMS IF EMPTY
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    status: "ok"
+  });
+});
+
+/* DATABASE CONNECTION */
+const startServer = async () => {
+  try {
+    await connectDB();
+
     const count = await Room.countDocuments();
 
     if (count === 0) {
@@ -55,10 +75,17 @@ connectDB()
 
       console.log("Rooms Seeded Successfully");
     }
-  })
-  .catch((err) => {
-    console.log("MongoDB Error:", err);
-  });
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Server startup failed:", err.message);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 /* REGISTER */
 app.post("/register", async (req, res) => {
@@ -245,9 +272,3 @@ app.delete("/cancel-booking/:id", async (req, res) => {
   }
 });
 
-/* SERVER */
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
