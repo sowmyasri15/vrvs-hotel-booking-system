@@ -49,20 +49,41 @@ document.getElementById("paymentForm").addEventListener("submit", async function
 
   const cardName = document.getElementById("cardName").value.trim();
   const cardNumber = document.getElementById("cardNumber").value.trim();
+  const expiryDate = document.getElementById("expiryDate").value.trim();
   const cvv = document.getElementById("cvv").value.trim();
 
   // VALIDATION
-  if (!cardName || !cardNumber || !cvv) {
-    alert("Fill all fields");
+  if (!cardName || !cardNumber || !expiryDate || !cvv) {
+    alert("Please fill all payment fields");
     return;
   }
 
-  if (cardNumber.length !== 16) {
+  if (!/^\d{16}$/.test(cardNumber)) {
     alert("Card Number must be 16 digits");
     return;
   }
 
-  if (cvv.length !== 3) {
+  if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+    alert("Expiry Date must be in MM/YY format");
+    return;
+  }
+
+  const [expMonth, expYear] = expiryDate.split("/").map(Number);
+  if (expMonth < 1 || expMonth > 12) {
+    alert("Expiry Month must be between 01 and 12");
+    return;
+  }
+
+  const now = new Date();
+  const currentYear = now.getFullYear() % 100;
+  const currentMonth = now.getMonth() + 1;
+
+  if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+    alert("Card has expired");
+    return;
+  }
+
+  if (!/^\d{3}$/.test(cvv)) {
     alert("CVV must be 3 digits");
     return;
   }
@@ -80,6 +101,7 @@ document.getElementById("paymentForm").addEventListener("submit", async function
         checkOut: booking.checkOut,
         cardName,
         cardNumber,
+        expiryDate,
         amount: totalAmount
       })
     });
@@ -90,22 +112,18 @@ document.getElementById("paymentForm").addEventListener("submit", async function
 
     if (data && data.success === true) {
 
-      alert(data.message || "Payment Successful");
+      alert("Payment Successful");
 
-      // ✅ IMPORTANT FIX: attach totalAmount to booking
       const finalBooking = {
         ...booking,
         paymentStatus: "Paid",
         totalAmount: totalAmount
       };
 
-      // SAVE IN LOCAL STORAGE (consistent key)
       let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
       bookings.push(finalBooking);
 
       localStorage.setItem("bookings", JSON.stringify(bookings));
-
-      // UPDATE CURRENT BOOKING TOO (for confirmation page)
       localStorage.setItem("currentBooking", JSON.stringify(finalBooking));
 
       window.location.href = "confirmation.html";

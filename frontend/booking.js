@@ -63,7 +63,7 @@ document.getElementById("bookingForm").addEventListener("submit", async function
         JSON.stringify(bookingData)
       );
 
-      alert(data.message || "Booking Successful!");
+      alert("Booking details saved. Please proceed to payment.");
 
       window.location.href = "payment.html";
 
